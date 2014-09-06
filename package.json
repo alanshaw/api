@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "precommit-hook": "~0.3.8",
-    "bucker": "~0 .6.3",
+    "bucker": "~1.0.11",
     "mocha": "~1.13.0",
     "request": "~2.27.0",
     "nodeunit": "^0.8.6"
