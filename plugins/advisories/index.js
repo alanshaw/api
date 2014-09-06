@@ -49,15 +49,22 @@ exports.register = function (plugin, options, next) {
 
   plugin.route({
     method: 'GET',
-    path: '/validate/{module}/{version}',
+    path: '/validate/{module}/{versions}',
     handler: function (request, reply) {
       var data = module_index[request.params.module] || {};
       var result = [];
+      var versions = request.params.versions.split(',');
+
       Object.keys(data).forEach(function (key) {
         var advisory = data[key];
-        if (semver.valid(request.params.version) && semver.satisfies(request.params.version, advisory.vulnerable_versions)) {
-          result.push(advisory);
-        }
+        var added = false;
+
+        versions.forEach(function (v) {
+          if (semver.valid(v) && semver.satisfies(v, advisory.vulnerable_versions) && !added) {
+            result.push(advisory);
+            added = true;
+          }
+        });
       });
       reply(result);
     }
